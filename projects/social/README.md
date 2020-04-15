@@ -24,7 +24,7 @@ It will be easier to build your extended social network if you have users to tes
 Note that in the above example, the average number of friendships is exactly 2 but the actual number of friends per user ranges anywhere from 0 to 4.
 
 _Suppose we have some friends, friends 1, 2, 3, 4_
-_[(1,2), (1,3), (1,4), (2,3), (2,4)]
+_all_possible_friendships = [(1,2), (1,3), (1,4), (2,3), (2,4), ]
 
 * Hint 1: To create N random friendships, you could create a list with all possible friendship combinations, shuffle the list, then grab the first N elements from the list. You will need to `import random` to get shuffle.
 

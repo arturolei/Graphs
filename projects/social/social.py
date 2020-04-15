@@ -40,51 +40,40 @@ class SocialGraph:
 
         The number of users must be greater than the average number of friendships.
         """
-        ## Hint 1: To create N random friendships, you could:
-        ## 1) create a list with all possible friendship combinations,
-        ## 2) shuffle the list, 
-        ## 3) grab the first N elements from the list. You will need to `import random` to get shuffle.
-
         # Reset graph
         self.last_id = 0
         self.users = {}
         self.friendships = {}
-        # !!!! IMPLEMENT ME
 
+        # Add users
         for user in range(num_users):
             self.add_user(user)
 
-        ## Hint 1: To create N random friendships, you could:
-        ## 1) create a list with all possible friendship combinations,
+    # create a list with all possible friendship combinations
         friendships = []
-        for user in range(1,self.last_id+1):
-            for friend in range(user+1, num_users):
-                friendships.append((user,friend))
-        
-        ## 2) shuffle the list, 
-        # random.shuffle(friendships/array)
+        for user in range(1, self.last_id + 1):
+            for friend in range(user + 1, num_users):
+                friendships.append((user, friend))
 
-                ## 3) grab the first N elements from the list. You will need to `import random` to get shuffle.
+    # shuffle the list, 
+        # mutate in place with: random.shuffle(array)
 
-
-        # Fisher Yates
-
+        # or, Fisher-Yates shuffle!
         for idx in range(len(friendships)):
-            rand_idx = random.random() # we need proper index
+         # randint will give us an integer in this range, inclusive (includes last number)
+            rand_idx = random.randint(0, len(friendships) - 1)  
+            # I think this syntax for swapping items is sweet
             friendships[idx], friendships[rand_idx] = friendships[rand_idx], friendships[idx]
-        
-        total_friendships = num_users * avg_friendships
-        pairs_needed = total_friendships // 2
 
+    # then grab the first N elements from the list.
+        total_friendships = num_users * avg_friendships
+        pairs_needed = friendships // 2 # bc add_friendship makes 2 at a time
         random_friendships = total_friendships[:pairs_needed]
 
+        # Create friendships
         for friendship in random_friendships:
             self.add_friendship(friendship[0], friendship[1])
 
-
-        # Add users
-
-        # Create friendships
 
     def get_all_social_paths(self, user_id):
         """
