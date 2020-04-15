@@ -1,3 +1,5 @@
+import random
+
 class User:
     def __init__(self, name):
         self.name = name
@@ -38,11 +40,47 @@ class SocialGraph:
 
         The number of users must be greater than the average number of friendships.
         """
+        ## Hint 1: To create N random friendships, you could:
+        ## 1) create a list with all possible friendship combinations,
+        ## 2) shuffle the list, 
+        ## 3) grab the first N elements from the list. You will need to `import random` to get shuffle.
+
         # Reset graph
         self.last_id = 0
         self.users = {}
         self.friendships = {}
         # !!!! IMPLEMENT ME
+
+        for user in range(num_users):
+            self.add_user(user)
+
+        ## Hint 1: To create N random friendships, you could:
+        ## 1) create a list with all possible friendship combinations,
+        friendships = []
+        for user in range(1,self.last_id+1):
+            for friend in range(user+1, num_users):
+                friendships.append((user,friend))
+        
+        ## 2) shuffle the list, 
+        # random.shuffle(friendships/array)
+
+                ## 3) grab the first N elements from the list. You will need to `import random` to get shuffle.
+
+
+        # Fisher Yates
+
+        for idx in range(len(friendships)):
+            rand_idx = random.random() # we need proper index
+            friendships[idx], friendships[rand_idx] = friendships[rand_idx], friendships[idx]
+        
+        total_friendships = num_users * avg_friendships
+        pairs_needed = total_friendships // 2
+
+        random_friendships = total_friendships[:pairs_needed]
+
+        for friendship in random_friendships:
+            self.add_friendship(friendship[0], friendship[1])
+
 
         # Add users
 
