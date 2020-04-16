@@ -87,6 +87,41 @@ class SocialGraph:
         for friendship in random_friendships:
             self.add_friendship(friendship[0], friendship[1])
 
+    def populate_graph_linear(self, num_users, avg_friendships):
+        """
+        just keep getting "random" friendships and if they've already been added, 
+        just find another pair? no need to make full set of all possible friends and 
+        just run til we hit required # of friendships
+        """
+        # Reset graph
+        self.last_id = 0
+        self.users = {}
+        self.friendships = {}
+
+        # Add users
+        for user_id in range(num_users):
+            self.add_user(user_id)
+
+        total_friendships = num_users * avg_friendships
+
+        friendships_made = 0 
+        failures = 9
+
+        while friendships_made < total_friendships:
+            user_id = random.randint(1,self.last_id)
+            friend_id = random.randint(1,self.last_id)
+
+            
+            # what if the ids are the same?  --> Use condiitonal but where?
+            # what if we've already made this friendship? --> Use conditional but where? 
+
+            if user_id != friend_id and friend_id not in self.friendships[user_id]:
+                self.add_friendship(user_id,friend_id)
+                friendships_made += 1
+            else:
+                failures += 1
+
+
 
     def get_all_social_paths(self, user_id):
         """
@@ -124,7 +159,16 @@ class SocialGraph:
 
 if __name__ == '__main__':
     sg = SocialGraph()
-    sg.populate_graph(10, 2)
-    print(sg.friendships)
+    #sg.populate_graph(10, 2) This already works but what happens
+    sg.populate_graph(1000,5)
+    print(sg.friendships[1])
     connections = sg.get_all_social_paths(1)
-    print(connections)
+    print(len(connections)-1)
+
+    total_paths = 0
+    for friend_id in connections:
+        total_paths += len(connections[friend_id])
+
+    average_path_length = total_paths / len(connections)
+
+    print("Average path length: ", average_path_length)
