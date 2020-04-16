@@ -1,5 +1,18 @@
 import random
 
+class Queue:
+    def __init__(self):
+        self.storage = []
+
+    def enqueue(self, item):
+        self.storage.append(item)
+
+    def dequeue(self):
+        return self.storage.pop(0)
+
+    def size(self):
+        return len(self.storage)
+
 class User:
     def __init__(self, name):
         self.name = name
@@ -55,7 +68,7 @@ class SocialGraph:
             for friend in range(user + 1, num_users):
                 friendships.append((user, friend))
 
-    # shuffle the list, 
+        # shuffle the list, 
         # mutate in place with: random.shuffle(array)
 
         # or, Fisher-Yates shuffle!
@@ -65,10 +78,10 @@ class SocialGraph:
             # I think this syntax for swapping items is sweet
             friendships[idx], friendships[rand_idx] = friendships[rand_idx], friendships[idx]
 
-    # then grab the first N elements from the list.
+        # then grab the first N elements from the list.
         total_friendships = num_users * avg_friendships
-        pairs_needed = friendships // 2 # bc add_friendship makes 2 at a time
-        random_friendships = total_friendships[:pairs_needed]
+        pairs_needed = total_friendships // 2 # bc add_friendship makes 2 at a time
+        random_friendships = friendships[:pairs_needed]
 
         # Create friendships
         for friendship in random_friendships:
@@ -83,9 +96,29 @@ class SocialGraph:
         extended network with the shortest friendship path between them.
 
         The key is the friend's ID and the value is the path.
+
+        Shortest path --> We have to do a BFS
         """
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
+        q = Queue()
+        path = [user_id]
+        q.enqueue(path)
+
+        while q.size() > 0:
+            current_path = q.dequeue()
+            current_user = current_path[-1]
+
+            if current_user not in visited:
+                visited[current_user] = current_path
+                friends = self.friendships[current_user]
+
+                for friend in friends:
+                    path_copy = current_path[:]
+                    path_copy.append(friend)
+                    q.enqueue(path_copy)
+
+
         return visited
 
 
